@@ -17,7 +17,7 @@ class CreatePatientsTable extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->string('phone');
-            $table->integer('cpf');
+            $table->string('cpf');
             $table->string('health_plan');
             $table->timestamps();
         });
