@@ -49,8 +49,10 @@
                                 </li>
                             @endif
                         @else
-                            <li><a class="nav-link" href="{{ route('users.index') }}">Usuarios</a></li>
-                            <li><a class="nav-link" href="{{ route('roles.index') }}">Roles (Perfils)</a></li>
+                            @if(Auth::user()->getRoleNames()[0] == 'Admin')
+                                <li><a class="nav-link" href="{{ route('users.index') }}">Usuarios</a></li>
+                                <li><a class="nav-link" href="{{ route('roles.index') }}">Roles (Perfils)</a></li>
+                            @endif
                             <li><a class="nav-link" href="{{ route('doctors.index') }}">Medicos</a></li>
                             <li><a class="nav-link" href="{{ route('patients.index') }}">Pacientes</a></li>
                             <li><a class="nav-link" href="{{ route('schedules.index') }}">Consultas</a></li>
