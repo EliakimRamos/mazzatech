@@ -116,7 +116,7 @@ class UserController extends Controller
     {
         $payload = $request->validated();
         $user = User::where('email',$payload['email'])->get();
-        if(!empty($user)){
+        if(!empty(count($user))){
             $novaSenha = Str::random(8);
             $nomeUser = $user[0]->name;
             $newPassword['password'] = $novaSenha;
@@ -126,7 +126,7 @@ class UserController extends Controller
             }
             return redirect()->route('login')->with('sucesso','E-mail enviado com sua senha');
         } else {
-            return redirect()->route('login')->with('Error','E-mail não encontrado');
+            return redirect()->route('login')->with('error','E-mail não encontrado');
         }
     }
 }

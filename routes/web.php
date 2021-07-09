@@ -24,6 +24,7 @@ Route::post('password/forgot', [UserController::class, 'resetPassword'])->name('
 Auth::routes();
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::group(['middleware' => ['auth']], function (){
     Route::resource('users', UserController::class);
