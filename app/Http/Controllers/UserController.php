@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ResetPasswordRequest;
 use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Models\User;
@@ -9,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -108,5 +110,23 @@ class UserController extends Controller
     {
         $user->delete();
         return redirect()->route('users.index')->with('sucesso','Usário excluido com sucesso!');
+    }
+
+    public function resetPassword(ResetPasswordRequest $request)
+    {
+        $payload = $request->validated();
+        $user = User::where('email',$payload['email'])->get();
+        if(!empty($user)){
+            $novaSenha = Str::random(8);
+            $nomeUser = $user[0]->name;
+            $newPassword['password'] = $novaSenha;
+            $texto = 'Olá '.$nomeUser.' \n segue sua nova senha: '.$novaSenha;
+            if(mail($payload['email'],'Nova senha',$texto)){
+                $user[0]->update($newPassword);
+            }
+            return redirect()->route('login')->with('sucesso','E-mail enviado com sua senha');
+        } else {
+            return redirect()->route('login')->with('Error','E-mail não encontrado');
+        }
     }
 }
